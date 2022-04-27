@@ -1,42 +1,74 @@
+type Query {
+  hello(name: String): String!
+  infos: Infos!
+  getAllStudents: [Student]
+  getStudent(id: ID!): Student
+  getToDo(id: String!): ToDo
+  getUser(id: String!): User
+}
+type Mutation {
+  createToDo(data: CreateToDoInput!): ToDo
+  updateToDo(data: UpdateToDoInput!): ToDo
+  deleteToDo(todoId: ID!): ToDo
+}
 type Infos {
-    name: String!
-    firstname: String!
+  name: String!
+  firstname: String!
 }
 enum Gender {
-    MALE
-    FEMALE
-}
-interface isNamed {
-    name: String
+  MALE
+  FEMALE
 }
 type Student {
-    id: ID!
-    name: String!
-    age: Int!
-    gender: Gender!
-    classroom: Classroom
-}
-input AddClassroomInput {
-    designation: String!
+  id: ID!
+  name: String!
+  age: Int!
+  gender: Gender!
+  classroom: Classroom
 }
 type Classroom {
-    id: ID!
-    designation: String!
-    students: [Student!]
-}
-type Query {
-    hello(name: String): String!
-    infos: Infos!
-    getAllStudents: [Student]
-    getStudent(id:ID!): Student
-    getAllClassroom: [Classroom]
+  id: ID!
+  designation: String!
+  students: [Student!]
 }
 
-type Mutation  {
-    addClassroom(addClassroomInput: AddClassroomInput): Classroom
+type ToDo {
+  id: String!
+  name: String!
+  content: String!
+  status: ToDoStatus!
+  user: User!
 }
 
+enum ToDoStatus {
+  WAITING
+  IN_PROGRESS
+  CANCELED
+  DONE
+}
+
+type User {
+  id: String!
+  name: String!
+  email: String!
+  todos: [ToDo!]
+}
+
+input CreateToDoInput {
+  name: String!
+  content: String!
+  status: ToDoStatus
+  user: String
+}
+input UpdateToDoInput {
+  id: String!
+  name: String
+  content: String
+  status: ToDoStatus
+  user: String
+}
 type Subscription {
-    newClassroom: Classroom!
+  newTodo: ToDo!
+  updatedTodo: ToDo!
+  deletedTodo: ToDo!
 }
-
